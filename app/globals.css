@@ -1,0 +1,277 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------ */
+/*  THERMALR — design tokens                                           */
+/*  Palette: Turquoise · Black · Wine Ash                              */
+/* ------------------------------------------------------------------ */
+@theme {
+  /* Core surfaces */
+  --color-ink: #060608;
+  --color-night: #0b0b10;
+  --color-coal: #121217;
+
+  /* Wine ash family */
+  --color-wine: #32292f;
+  --color-wine-2: #241d22;
+  --color-wine-3: #1a151a;
+
+  /* Turquoise family */
+  --color-turq: #34e3cd;
+  --color-turq-bright: #57f5e0;
+  --color-turq-soft: #99e1d9;
+  --color-turq-deep: #1aa896;
+
+  /* Light surfaces */
+  --color-cream: #f2f1ed;
+  --color-fog: #e4e3de;
+  --color-mist: #d6d5cf;
+
+  /* Text */
+  --color-muted: #8b8b94;
+  --color-muted-dark: #5b5b63;
+
+  /* Fonts (wired to next/font css variables) */
+  --font-display: var(--font-archivo), "Arial Narrow", sans-serif;
+  --font-sans: var(--font-manrope), system-ui, sans-serif;
+  --font-mono: var(--font-space), ui-monospace, monospace;
+
+  /* Motion */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Layout */
+  --gutter: clamp(1rem, 4vw, 3.5rem);
+}
+
+/* ------------------------------------------------------------------ */
+/*  Base                                                               */
+/* ------------------------------------------------------------------ */
+@layer base {
+  * {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  html {
+    background-color: var(--color-ink);
+    color: var(--color-cream);
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    overflow-x: hidden;
+    font-feature-settings: "ss01", "cv01";
+  }
+
+  ::selection {
+    background: var(--color-turq);
+    color: var(--color-ink);
+  }
+
+  /* Lenis */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-stopped {
+    overflow: clip;
+  }
+
+  /* Hide native cursor only on fine pointers where custom cursor runs */
+  @media (hover: hover) and (pointer: fine) {
+    body.has-cursor,
+    body.has-cursor * {
+      cursor: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/*  Typography helpers                                                 */
+/* ------------------------------------------------------------------ */
+@layer components {
+  .font-display {
+    font-family: var(--font-display);
+  }
+  .font-mono {
+    font-family: var(--font-mono);
+  }
+
+  .display-xl {
+    font-family: var(--font-display);
+    font-weight: 800;
+    line-height: 0.92;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    font-size: clamp(2.6rem, 8.4vw, 9.5rem);
+  }
+
+  .display-lg {
+    font-family: var(--font-display);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.018em;
+    text-transform: uppercase;
+    font-size: clamp(2.1rem, 6.2vw, 6.4rem);
+  }
+
+  .display-md {
+    font-family: var(--font-display);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    font-size: clamp(1.7rem, 3.8vw, 3.4rem);
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: clamp(0.62rem, 0.78vw, 0.74rem);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  .label-mono {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/*  Utilities                                                          */
+/* ------------------------------------------------------------------ */
+@layer utilities {
+  .shell {
+    padding-inline: var(--gutter);
+  }
+
+  /* faint grid line */
+  .hairline {
+    border-color: color-mix(in srgb, currentColor 12%, transparent);
+  }
+
+  /* Reveal masks for split text */
+  .reveal-line {
+    display: block;
+    overflow: hidden;
+  }
+  .reveal-line > span {
+    display: block;
+    will-change: transform;
+  }
+
+  /* Grain overlay */
+  .grain::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0.045;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* turquoise glow */
+  .glow-turq {
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-turq) 40%, transparent),
+      0 0 60px -12px color-mix(in srgb, var(--color-turq) 60%, transparent);
+  }
+
+  .bg-grid-lines {
+    background-image: linear-gradient(
+        to right,
+        color-mix(in srgb, currentColor 7%, transparent) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        to bottom,
+        color-mix(in srgb, currentColor 7%, transparent) 1px,
+        transparent 1px
+      );
+    background-size: 25% 100%, 100% 120px;
+  }
+}
+
+/* Custom cursor element */
+.cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--color-turq);
+  pointer-events: none;
+  z-index: 10000;
+  transform: translate3d(-50%, -50%, 0);
+  mix-blend-mode: difference;
+}
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--color-turq) 70%, transparent);
+  pointer-events: none;
+  z-index: 10000;
+  transform: translate3d(-50%, -50%, 0);
+  transition: width 0.3s var(--ease-out-expo), height 0.3s var(--ease-out-expo),
+    background 0.3s ease, border-color 0.3s ease;
+}
+.cursor-ring[data-hover="true"] {
+  width: 68px;
+  height: 68px;
+  background: color-mix(in srgb, var(--color-turq) 12%, transparent);
+}
+
+/* Marquee */
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee-track {
+  display: inline-flex;
+  white-space: nowrap;
+  animation: marquee 28s linear infinite;
+}
+.marquee-track.reverse {
+  animation-direction: reverse;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 9px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-ink);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-wine);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-turq-deep);
+}
