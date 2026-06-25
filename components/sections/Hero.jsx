@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
 
@@ -10,9 +10,18 @@ const STATS = [
   { v: "80¢", u: "/KM", l: "Running Cost" },
 ];
 
-export default function Hero() {
+export default function Hero({ videoUrl }) {
   const root = useRef(null);
   const video = useRef(null);
+
+  useEffect(() => {
+    if (video.current) {
+      video.current.load();
+      video.current.play().catch((err) => {
+        console.warn("Video playback was interrupted:", err);
+      });
+    }
+  }, [videoUrl]);
 
   useGSAP(
     () => {
@@ -67,15 +76,14 @@ export default function Hero() {
           <video
             ref={video}
             className="h-full w-full scale-110 object-cover"
+            src={videoUrl || "/hero-vid.mp4"}
             autoPlay
             muted
             loop
             playsInline
             preload="auto"
             poster=""
-          >
-            <source src="/hero-vid.mp4" type="video/mp4" />
-          </video>
+          />
         </div>
 
         {/* overlays */}

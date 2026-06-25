@@ -10,4 +10,5 @@ npm-debug.log*
 /next-env.d.ts
 .vercel
 /.claude
+public/hero-vid-original.mp4
 

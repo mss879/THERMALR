@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import SmoothScroll from "@/components/SmoothScroll";
 import Cursor from "@/components/Cursor";
 import Preloader from "@/components/Preloader";
@@ -19,13 +20,15 @@ import Contact from "@/components/sections/Contact";
 import Footer from "@/components/sections/Footer";
 
 export default function Home() {
+  const [videoUrl, setVideoUrl] = useState("");
+
   return (
     <SmoothScroll>
-      <Preloader />
+      <Preloader setVideoUrl={setVideoUrl} />
       <Cursor />
       <Navbar />
       <main>
-        <Hero />
+        <Hero videoUrl={videoUrl} />
         <MarqueeBand />
         <About />
         <Products />
